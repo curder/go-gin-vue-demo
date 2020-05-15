@@ -22,6 +22,7 @@ const userModule = {
   },
 
   actions: {
+    // 注册
     register(context, { name, phone, password }) {
       return new Promise((resolve, reject) => {
         userService.register({
@@ -31,6 +32,28 @@ const userModule = {
         })
           .then(({ data }) => {
             // 保存用户token
+            context.commit('setToken', data.data.token);
+            return userService.info();
+          })
+          .then(({ data }) => {
+            // 保存用户信息
+            context.commit('setUserInfo', JSON.stringify(data.data.user));
+            resolve(data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+
+    // 登录
+    login(context, { phone, password }) {
+      return new Promise((resolve, reject) => {
+        userService.login({
+          phone,
+          password,
+        })
+          .then(({ data }) => {
             context.commit('setToken', data.data.token);
             return userService.info();
           })
