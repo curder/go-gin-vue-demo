@@ -30,13 +30,11 @@
   </b-navbar>
 </template>
 <script>
-import storageService from '@/services/storageService';
+import { mapState } from 'vuex';
 
 export default {
-  computed: {
-    userInfo() {
-      return JSON.parse(storageService.get(storageService.USER_INFO));
-    },
-  },
+  computed: mapState({
+    userInfo: (state) => state.userModule.userInfo,
+  }),
 };
 </script>

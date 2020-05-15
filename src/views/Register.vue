@@ -55,9 +55,9 @@
 <script>
 import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 
+import { mapActions } from 'vuex';
+
 import customValidator from '../helpers/validators';
-import storageService from '../services/storageService';
-import userService from '../services/userService';
 
 export default {
   data() {
@@ -87,6 +87,9 @@ export default {
   },
 
   methods: {
+
+    ...mapActions('userModule', { userRegister: 'register' }),
+
     register() {
       this.$v.user.$touch();
       if (this.$v.user.$anyError) { // 验证数据
@@ -94,20 +97,13 @@ export default {
       }
 
       // 发起请求
-      userService.register({ ...this.user })
+      this.userRegister({ ...this.user })
+        // eslint-disable-next-line no-unused-vars
         .then(({ data }) => {
-          storageService.set(storageService.USER_TOKEN, data.data.token);
-
-          userService.info()
-            // eslint-disable-next-line no-shadow
-            .then(({ data }) => {
-              // 保存用户信息
-              storageService.set(storageService.USER_INFO, JSON.stringify(data.data.user));
-              this.$router.replace({ name: 'Home' }); // 跳转到首页
-            });
+          this.$router.replace({ name: 'Home' }); // 跳转到首页
         })
-        .catch((err) => {
-          this.$bvToast.toast(err.response.data.message, {
+        .catch((error) => {
+          this.$bvToast.toast(error.response.data.message, {
             title: '数据验证失败',
             variant: 'danger',
             solid: true,
