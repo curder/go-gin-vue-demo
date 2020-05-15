@@ -5,7 +5,8 @@ const userModule = {
   namespaced: true,
   state: {
     token: storageService.get(storageService.USER_TOKEN),
-    userInfo: JSON.parse(storageService.get(storageService.USER_INFO)),
+    // eslint-disable-next-line max-len
+    userInfo: storageService.get(storageService.USER_INFO) ? JSON.parse(storageService.get(storageService.USER_INFO)) : null,
   },
 
   mutations: {
@@ -17,7 +18,7 @@ const userModule = {
     setUserInfo(state, user) {
       // 更新本地缓存
       storageService.set(storageService.USER_INFO, user);
-      state.userInfo = JSON.parse(user);
+      state.userInfo = user ? JSON.parse(user) : '';
     },
   },
 
@@ -66,6 +67,17 @@ const userModule = {
             reject(error);
           });
       });
+    },
+
+    // 退出登录
+    logout(context) {
+      // 清除token
+      context.commit('setToken', '');
+      storageService.set(storageService.USER_TOKEN, '');
+
+      // 清除用户信息
+      context.commit('setUserInfo', '');
+      storageService.set(storageService.USER_INFO, '');
     },
   },
 };
