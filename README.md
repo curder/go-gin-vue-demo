@@ -1,24 +1,38 @@
 # go-gin-vue-demo
 
-## Project setup
-```
-yarn install
+## 启动
+```    
+git clone git@github.com:curder/go-gin-vue-demo.git
+
+cd go-gin-vue-demo && yarn install
 ```
 
-### Compiles and hot-reloads for development
+### 开发
+
+```
+cp .env.development .env.development.local
+```
+
+> 修改文件里的后端提供的api请求地址 
+
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+
+### 编译
 ```
 yarn build
 ```
 
-### Lints and fixes files
+### 检查并修复文件错误
 ```
 yarn lint
 ```
 
-### Customize configuration
+### 常用配置
 See [Configuration Reference](https://cli.vuejs.org/config/).
+                                                      
+### 参考
+
+- [go-gin-demo - Api提供](https://github.com/curder/go-gin-demo)
